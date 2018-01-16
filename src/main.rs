@@ -1,34 +1,22 @@
-
-
 struct Champernowne {
     current: usize,
-    index: Option<usize>,
+    index: usize,
 }
 
 impl Champernowne {
     fn next_char(&mut self) -> Option<char> {
-        match self.index {
-            None => {
-                self.index = Some(0)
-            }
-
-            _ => {}
-        }
-
-        let index = self.index.unwrap();
         let string = self.current.to_string();
         let mut chars = string.chars();
 
-        let c = chars.nth(index);
+        let c = chars.nth(self.index);
         match c {
             Some(ch) => {
-                let new_index = index + 1;
-                self.index = Some(new_index);
+                self.index += 1;
                 Some(ch)
             }
 
             None => {
-                self.index = None;
+                self.index = 0;
                 self.current += 1;
 
                 self.next_char()
@@ -47,7 +35,7 @@ impl Iterator for Champernowne {
 
 fn main() {
     // starting with 0 to make the subscripts easier (+1 below)
-    let c = Champernowne{ current: 0, index: None };
+    let c = Champernowne{ current: 0, index: 0 };
 
     let d: Vec<_> = c.take(1000001).map( |c| c.to_string().parse::<i64>().unwrap() ).collect();
 
