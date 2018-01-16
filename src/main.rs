@@ -5,10 +5,8 @@ struct Champernowne {
     index: Option<usize>,
 }
 
-impl Iterator for Champernowne {
-    type Item = char;
-
-    fn next(&mut self) -> Option<char> {
+impl Champernowne {
+    fn next_char(&mut self) -> Option<char> {
         match self.index {
             None => {
                 self.index = Some(0)
@@ -22,21 +20,33 @@ impl Iterator for Champernowne {
         let mut chars = string.chars();
 
         let c = chars.nth(index);
-        
-        let new_index = index + 1;
+        match c {
+            Some(ch) => {
+                let new_index = index + 1;
+                self.index = Some(new_index);
+                Some(ch)
+            }
 
-        if new_index > chars.count() {
-            self.index = None;
-            self.current += 1;
-        } else {
-            self.index = Some(new_index);
+            None => {
+                self.index = None;
+                self.current += 1;
+
+                self.next_char()
+            }
         }
+    }
+}
 
-        c
+impl Iterator for Champernowne {
+    type Item = char;
+
+    fn next(&mut self) -> Option<char> {
+        self.next_char()
     }
 }
 
 fn main() {
+    // starting with 0 to make the subscripts easier (+1 below)
     let c = Champernowne{ current: 0, index: None };
 
     let d: Vec<_> = c.take(1000001).map( |c| c.to_string().parse::<i64>().unwrap() ).collect();
