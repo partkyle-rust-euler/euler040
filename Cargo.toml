@@ -1,0 +1,6 @@
+[package]
+name = "euler040"
+version = "0.1.0"
+authors = ["Kyle Partridge <kyle.partridge@sendgrid.com>"]
+
+[dependencies]
